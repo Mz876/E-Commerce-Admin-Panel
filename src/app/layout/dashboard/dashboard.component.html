@@ -1,0 +1,169 @@
+<!-- Root Wrapper with full viewport height -->
+<div class="min-h-screen bg-gray-50 dark:bg-gray-800">
+  <!-- Main Content Area -->
+  <div class="p-6">
+    <!-- Stats Cards Component (no flex-1 here) -->
+    <div class="mb-6 bg-gray-50 dark:bg-gray-800">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Orders Card -->
+        <app-stat-card></app-stat-card>
+        <!-- Products Card -->
+        <app-stat-card></app-stat-card>
+        <!-- Users Card -->
+        <app-stat-card></app-stat-card>
+      </div>
+    </div>
+
+    <!-- Tables Section -->
+    <div class="bg-gray-50 dark:bg-gray-800">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Latest Products Table -->
+        <div class="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            <h3 class="text-lg font-medium text-gray-800 dark:text-gray-100">
+              Latest Products
+            </h3>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+              <thead class="bg-gray-50 dark:bg-gray-700">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Product
+                  </th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Category
+                  </th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Price
+                  </th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Status
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
+                @for (product of latestProducts; track product.id) {
+                  <tr>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center">
+                        <div class="h-10 w-10 flex-shrink-0">
+                          <img class="h-10 w-10 rounded-full object-cover" [src]="product.image" alt="" />
+                        </div>
+                        <div class="ml-4">
+                          <div class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                            {{ product.name }}
+                          </div>
+                          <div class="text-sm text-gray-500 dark:text-gray-400">
+                            SKU: {{ product.sku }}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900 dark:text-gray-100">
+                        {{ product.category }}
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900 dark:text-gray-100">
+                        {{ product.price | currency }}
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span [class]="getProductStatusClass(product.status)">
+                        {{ product.status }}
+                      </span>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <div class="px-6 py-2 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+            <a href="#" class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200">
+              View all products →
+            </a>
+          </div>
+        </div>
+
+        <!-- Recent Orders Table -->
+        <div class="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            <h3 class="text-lg font-medium text-gray-800 dark:text-gray-100">
+              Recent Orders
+            </h3>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+              <thead class="bg-gray-50 dark:bg-gray-700">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Order ID
+                  </th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Customer
+                  </th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Amount
+                  </th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Status
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
+                @for (order of recentOrders; track order.id) {
+                  <tr>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                        #{{ order.id }}
+                      </div>
+                      <div class="text-xs text-gray-500 dark:text-gray-400">
+                        {{ order.date | date:'short' }}
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center">
+                        <div class="h-8 w-8 flex-shrink-0">
+                          <img class="h-8 w-8 rounded-full" [src]="order.customer.avatar" alt="" />
+                        </div>
+                        <div class="ml-3">
+                          <div class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                            {{ order.customer.name }}
+                          </div>
+                          <div class="text-xs text-gray-500 dark:text-gray-400">
+                            {{ order.customer.email }}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900 dark:text-gray-100 font-medium">
+                        {{ order.amount | currency }}
+                      </div>
+                      <div class="text-xs text-gray-500 dark:text-gray-400">
+                        {{ order.items }} items
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span [class]="getOrderStatusClass(order.status)">
+                        {{ order.status }}
+                      </span>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <div class="px-6 py-2 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+            <a href="#" class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200">
+              View all orders →
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

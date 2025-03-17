@@ -1,0 +1,23 @@
+<div class="flex h-screen">
+  <!-- Sidebar -->
+  <div
+    class="bg-gray-800 transition-all duration-300"
+    [ngClass]="{
+      'w-64': isSidebarOpen,
+      'w-0 overflow-hidden': !isSidebarOpen
+    }"
+  >
+    <app-side-bar (sidebarToggle)="toggleSidebar()"></app-side-bar>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <!-- Navbar -->
+    <div>
+      <app-nav-bar [isSidebarOpen]="isSidebarOpen" (toggleSidebar)="toggleSidebar()"></app-nav-bar>
+    </div>
+
+    <!-- The child page content -->
+    <router-outlet></router-outlet>
+  </div>
+</div>

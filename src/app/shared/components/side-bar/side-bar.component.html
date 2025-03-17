@@ -1,0 +1,57 @@
+<!-- Sidebar Component -->
+<div class="w-64 h-screen bg-white dark:bg-gray-800 text-black dark:text-white flex flex-col">
+  <!-- Header -->
+  <div class="flex items-center justify-between px-4 py-4 border-b border-gray-200 dark:border-gray-700">
+    <span class="text-xl font-bold">E-Commerce</span>
+    <img (click)="onBurgerClick()" [src]="burgerIcon" alt="Menu" class="h-6 w-6 cursor-pointer" />
+  </div>
+
+  <!-- Navigation -->
+  <div class="flex-grow">
+    <ul class="mt-4 space-y-2">
+      <!-- Dashboard -->
+      <li (click)="goToDashboard()" class="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+        <ion-img [src]="dashboard" class="w-5 h-5 mr-2"></ion-img>
+        <span>Dashboard</span>
+      </li>
+
+      <!-- Products Section with Toggle -->
+      <li class="flex flex-col">
+        <div (click)="toggleProducts()" class="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+          <ion-img [src]="product" class="w-5 h-5 mr-2"></ion-img>
+          <span>Products</span>
+          <span class="ml-auto transition-transform" [ngClass]="{'rotate-180': showProducts}">▼</span>
+        </div>
+
+        <!-- Products Submenu -->
+        <div [ngClass]="{'hidden': !showProducts}" class="bg-gray-100 dark:bg-gray-900">
+          <div (click)="goToProductList()" class="flex items-center px-8 py-2 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer">
+            <span>Product List</span>
+          </div>
+          <div (click)="goToAddProduct()" class="flex items-center px-8 py-2 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer">
+            <span>Add Product</span>
+          </div>
+        </div>
+      </li>
+
+      <!-- Orders Section with Toggle -->
+      <li class="flex flex-col">
+        <div (click)="toggleOrders()" class="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+          <ion-img [src]="order" class="w-5 h-5 mr-2"></ion-img>
+          <span>Orders</span>
+          <span class="ml-auto transition-transform" [ngClass]="{'rotate-180': showOrders}">▼</span>
+        </div>
+
+        <!-- Orders Submenu -->
+        <div [ngClass]="{'hidden': !showOrders}" class="bg-gray-100 dark:bg-gray-900">
+          <div (click)="goToOrderList()" class="flex items-center px-8 py-2 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer">
+            <span>Order List</span>
+          </div>
+          <div (click)="goToAddOrder()" class="flex items-center px-8 py-2 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer">
+            <span>Add Order</span>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

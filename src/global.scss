@@ -35,3 +35,29 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background-color: #ffffff;
+  --text-color: #000000;
+  // Other CSS variables...
+}
+
+body.dark {
+  --background-color: #1F2937;
+  --text-color: white;
+  // Override other variables for dark mode...
+}
+
+/* Example usage in your app */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.white{
+  color: white;
+}

@@ -1,0 +1,241 @@
+<!-- Full screen layout wrapper -->
+<div class="h-screen w-screen flex flex-col bg-gray-100 dark:bg-gray-800 overflow-hidden">
+  <!-- Page Content - No max-width to take full screen -->
+  <div class="flex-1 overflow-auto p-0">
+    <div class="bg-white dark:bg-gray-900 min-h-screen p-6 md:p-8">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-100">
+          Add New Product
+        </h2>
+
+        <!-- Reactive Form -->
+        <form [formGroup]="addProductForm" (ngSubmit)="onSubmit()">
+          <!-- Product Name -->
+          <div class="mb-6">
+            <label
+              class="block text-gray-700 dark:text-gray-300 font-semibold mb-2"
+              for="productName"
+            >
+              Product Name
+            </label>
+            <input
+              id="productName"
+              type="text"
+              formControlName="name"
+              class="w-full border border-gray-300 dark:border-gray-700 rounded px-3 py-2 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter product name"
+            />
+            <div
+              *ngIf="addProductForm.get('name')?.invalid && addProductForm.get('name')?.touched"
+              class="text-red-500 text-sm mt-1"
+            >
+              Name is required
+            </div>
+          </div>
+
+          <!-- Two column layout for SKU and Category -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <!-- SKU -->
+            <div>
+              <label
+                class="block text-gray-700 dark:text-gray-300 font-semibold mb-2"
+                for="productSKU"
+              >
+                SKU
+              </label>
+              <input
+                id="productSKU"
+                type="text"
+                formControlName="sku"
+                class="w-full border border-gray-300 dark:border-gray-700 rounded px-3 py-2 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter SKU"
+              />
+              <div
+                *ngIf="addProductForm.get('sku')?.invalid && addProductForm.get('sku')?.touched"
+                class="text-red-500 text-sm mt-1"
+              >
+                SKU is required
+              </div>
+            </div>
+
+            <!-- Category -->
+            <div>
+              <label
+                class="block text-gray-700 dark:text-gray-300 font-semibold mb-2"
+                for="productCategory"
+              >
+                Category
+              </label>
+              <input
+                id="productCategory"
+                type="text"
+                formControlName="category"
+                class="w-full border border-gray-300 dark:border-gray-700 rounded px-3 py-2 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter category"
+              />
+              <div
+                *ngIf="addProductForm.get('category')?.invalid && addProductForm.get('category')?.touched"
+                class="text-red-500 text-sm mt-1"
+              >
+                Category is required
+              </div>
+            </div>
+          </div>
+
+          <!-- Two column layout for Price and Status -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <!-- Price -->
+            <div>
+              <label
+                class="block text-gray-700 dark:text-gray-300 font-semibold mb-2"
+                for="productPrice"
+              >
+                Price
+              </label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <span class="text-gray-500 dark:text-gray-400">$</span>
+                </div>
+                <input
+                  id="productPrice"
+                  type="number"
+                  formControlName="price"
+                  class="w-full border border-gray-300 dark:border-gray-700 rounded pl-7 pr-3 py-2 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter price"
+                />
+              </div>
+              <div
+                *ngIf="addProductForm.get('price')?.invalid && addProductForm.get('price')?.touched"
+                class="text-red-500 text-sm mt-1"
+              >
+                Price is required and must be ≥ 0
+              </div>
+            </div>
+
+            <!-- Status -->
+            <div>
+              <label
+                class="block text-gray-700 dark:text-gray-300 font-semibold mb-2"
+                for="productStatus"
+              >
+                Status
+              </label>
+              <div class="relative">
+                <select
+                  id="productStatus"
+                  formControlName="status"
+                  class="w-full border border-gray-300 dark:border-gray-700 rounded px-3 py-2 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+                >
+                  <option value="In Stock">In Stock</option>
+                  <option value="Low Stock">Low Stock</option>
+                  <option value="Out of Stock">Out of Stock</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
+                  <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Added Date -->
+          <div class="mb-6">
+            <label
+              class="block text-gray-700 dark:text-gray-300 font-semibold mb-2"
+              for="productDate"
+            >
+              Added Date
+            </label>
+            <input
+              id="productDate"
+              type="date"
+              formControlName="addedDate"
+              class="w-full border border-gray-300 dark:border-gray-700 rounded px-3 py-2 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <!-- Multiple Image Upload -->
+          <div class="mb-6">
+            <label class="block text-gray-700 dark:text-gray-300 font-semibold mb-2">
+              Product Images
+            </label>
+            <div class="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-6 text-center bg-gray-50 dark:bg-gray-800">
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                class="hidden"
+                id="fileInput"
+                (change)="onImageSelected($event)"
+              />
+              <label for="fileInput" class="cursor-pointer">
+                <div class="flex flex-col items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 dark:text-gray-500 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <p class="text-gray-600 dark:text-gray-400 mb-1">Drag and drop your images or click to browse</p>
+                  <p class="text-sm text-gray-500 dark:text-gray-500">You can select multiple images</p>
+                </div>
+              </label>
+            </div>
+
+            <!-- Image Previews -->
+            <div *ngIf="productImages.length > 0" class="mt-4">
+              <p class="text-gray-700 dark:text-gray-300 font-semibold mb-2">
+                Selected Images ({{ productImages.length }}):
+              </p>
+              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                <div *ngFor="let img of productImages; let i = index" class="relative group">
+                  <img
+                    [src]="img.preview"
+                    alt="Product preview"
+                    class="h-32 w-full object-cover rounded shadow"
+                  />
+                  <button
+                    type="button"
+                    class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                    (click)="removeImage(i)"
+                    aria-label="Remove image"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-4 w-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit and Cancel Buttons -->
+          <div class="flex flex-col sm:flex-row gap-4 justify-end mt-8">
+            <button
+              type="button"
+              class="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+             >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              [disabled]="addProductForm.invalid"
+            >
+              Save Product
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

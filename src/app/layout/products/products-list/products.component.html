@@ -1,0 +1,212 @@
+<div class="flex h-screen bg-gray-100 dark:bg-gray-900">
+
+<!-- Main Content -->
+<div class="flex-1 flex flex-col overflow-hidden">
+  <!-- Content Area -->
+  <div class="flex-1 overflow-auto bg-gray-100 dark:bg-gray-800 p-6">
+    <!-- Search & Filter Bar -->
+    <div class="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 mb-6">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <span class="mr-3 text-sm text-gray-600 dark:text-gray-300">Showing</span>
+          <select
+            class="rounded border border-gray-300 dark:border-gray-700 py-1 px-2 mr-3 dark:bg-gray-800 dark:text-gray-100"
+            (change)="onItemsPerPageChange($event)"
+          >
+            <option
+              *ngFor="let option of displayOptions"
+              [value]="option"
+              [selected]="option === selectedDisplayOption"
+            >
+              {{ option }}
+            </option>
+          </select>
+          <span class="text-sm text-gray-600 dark:text-gray-300">entries</span>
+        </div>
+        <div class="flex">
+          <div class="relative">
+            <input
+              type="text"
+              [(ngModel)]="searchQuery"
+              (keyup)="searchProducts()"
+              placeholder="Search here..."
+              class="border border-gray-300 dark:border-gray-700 rounded-lg py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-gray-100"
+            />
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3">
+              <svg
+                class="h-5 w-5 text-gray-400 dark:text-gray-300"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </div>
+          </div>
+          <button
+            routerLink="/products/add"
+            class="ml-4 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg flex items-center"
+            (click)="toAddProducts()"
+          >
+            <svg
+              class="h-5 w-5 mr-2"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Add new
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Table -->
+    <div class="bg-white dark:bg-gray-900 rounded-lg shadow-md overflow-hidden">
+      <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+        <thead class="bg-gray-50 dark:bg-gray-700">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+              Product
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+              Product ID
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+              Price
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+              Category
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+              Status
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+              Added Date
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+              Edit
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+              Delete
+            </th>
+          </tr>
+        </thead>
+        <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
+          <tr *ngFor="let product of getPaginatedProducts()">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="flex-shrink-0 h-10 w-10">
+                  <img class="h-10 w-10 rounded-md object-cover" [src]="product.image" alt="Product image">
+                </div>
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ product.name }}</div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900 dark:text-gray-100">{{ product.sku }}</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900 dark:text-gray-100">${{ product.price.toFixed(2) }}</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900 dark:text-gray-100">{{ product.category }}</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" [ngClass]="getStatusClass(product.status)">
+                {{ product.status }}
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+              {{ product.addedDate | date:'MMM d, y' }}
+            </td>
+            <!-- Edit Column -->
+            <td class="px-6 py-4 whitespace-nowrap text-center">
+              <ion-icon name="create-outline"
+                        class="h-5 w-5 text-blue-500 cursor-pointer"
+              ></ion-icon>
+            </td>
+            <!-- Delete Column -->
+            <td class="px-6 py-4 whitespace-nowrap text-center">
+              <ion-icon name="trash-outline"
+                        class="h-5 w-5 text-red-500 cursor-pointer"
+              ></ion-icon>
+            </td>
+          </tr>
+          <!-- Empty state if no products -->
+          <tr *ngIf="filteredProducts.length === 0">
+            <td colspan="8" class="px-6 py-10 text-center text-gray-500 dark:text-gray-400">
+              No products found.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Pagination -->
+      <div class="bg-white dark:bg-gray-900 px-4 py-3 flex items-center justify-between border-t border-gray-200 dark:border-gray-700 sm:px-6">
+        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+          <div>
+            <p class="text-sm text-gray-700 dark:text-gray-300">
+              Showing
+              <span class="font-medium">{{ (currentPage - 1) * itemsPerPage + 1 }}</span>
+              to
+              <span class="font-medium">{{ math.min(currentPage * itemsPerPage, filteredProducts.length) }}</span>
+              of
+              <span class="font-medium">{{ filteredProducts.length }}</span>
+              entries
+            </p>
+          </div>
+          <div>
+            <nav class="relative z-0 inline-flex shadow-sm -space-x-px" aria-label="Pagination">
+              <button
+                (click)="onPageChange(currentPage - 1)"
+                [disabled]="currentPage === 1"
+                class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+              >
+                <span class="sr-only">Previous</span>
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M12.707 14.707a1 1 0 01-1.414 0L7 10.414l4.293-4.293a1 1 0 011.414 1.414L9.414 10l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+              </button>
+              <ng-container *ngFor="let page of [].constructor(getTotalPages()); let i = index">
+                <button
+                  (click)="onPageChange(i + 1)"
+                  [class.bg-blue-500]="currentPage === (i + 1)"
+                  [class.text-white]="currentPage === (i + 1)"
+                  class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                >
+                  {{ i + 1 }}
+                </button>
+              </ng-container>
+              <button
+                (click)="onPageChange(currentPage + 1)"
+                [disabled]="currentPage === getTotalPages()"
+                class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+              >
+                <span class="sr-only">Next</span>
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M7.293 5.293a1 1 0 011.414 0L13 9.586l-4.293 4.293a1 1 0 01-1.414-1.414L10.586 10 7.293 6.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+              </button>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
